@@ -15,8 +15,18 @@ def create_table(tb_name, cols):
             f.write(",".join(cols) + "\n")
         print(f"Table '{tb_name}' created successfully.")
 
+def delete_table(tb_name):
+    if Current_Database == "":
+        print("Error: No database selected.")
+        return
 
-    
+    table_path = f"{Current_Database}/{tb_name}.csv"
+    if os.path.exists(table_path):
+        os.remove(table_path)
+        print("Successful, table removed")
+    else:
+        print("Failed, table does not exist")
+        
 
 def delete_database(db_name):
     global Current_Database
@@ -57,6 +67,8 @@ def parse_input(user_input):
     if (len(tokens) < 2):
         """Prevents CREATE; or DROP; from breaking the code"""
         return
+    
+
     if tokens[0].upper() == "USE":
         if (len(tokens) == 2):
             use_database(tokens[-1])
@@ -83,11 +95,13 @@ def parse_input(user_input):
                 columns = column_stuff.split(",")
             
             create_table(tb_name, columns)
-
-                
-
+    elif tokens[0].upper() == "DROP" and tokens[1].upper() == "TABLE":
+        if len(tokens) == 3:
+            delete_table(tokens[-1])
         else:
-            print("Error: Invalid command syntax, table name and/or columns not defined")
+            print("Error: Invalid command syntax, Too many arguments")
+    else:
+        print("Error: Invalid command syntax, table name and/or columns not defined")
 
 
 
