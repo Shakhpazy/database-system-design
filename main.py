@@ -12,7 +12,7 @@ def create_table(tb_name, cols):
         print(f"Failed: Table '{tb_name}' already exists in '{Current_Database}'.")
     else:
         with open(table_path, "w") as f:
-            f.write(",".join(cols) + "\n")
+            f.write(",".join(cols))
         print(f"Table '{tb_name}' created successfully.")
 
 def delete_table(tb_name):
@@ -26,7 +26,21 @@ def delete_table(tb_name):
         print("Successful, table removed")
     else:
         print("Failed, table does not exist")
-        
+
+def alter_table(tb_name, col):
+    global Current_Database
+    if Current_Database == "":
+        print("Error: No database selected.")
+        return
+
+    table_path = f"{Current_Database}/{tb_name}.csv"
+    if os.path.exists(table_path):
+        with open(table_path, "a") as f:
+            f.write(", " + col)
+        print(f"Table '{tb_name}' altered successfully.")
+    else:
+        print(f"Failed: Table '{tb_name}' already exists in '{Current_Database}'.")
+
 
 def delete_database(db_name):
     global Current_Database
@@ -93,13 +107,20 @@ def parse_input(user_input):
             if start != -1 and end != -1:
                 column_stuff = user_input[start+1:end]
                 columns = column_stuff.split(",")
-            
             create_table(tb_name, columns)
     elif tokens[0].upper() == "DROP" and tokens[1].upper() == "TABLE":
         if len(tokens) == 3:
             delete_table(tokens[-1])
         else:
             print("Error: Invalid command syntax, Too many arguments")
+    elif tokens[0].upper() == "ALTER" and tokens[1] == "TABLE":
+        if len(tokens) > 5:
+            tb_name = tokens[2]
+            operation = tokens[3] #We shouldn't need it for this assignement
+            column = tokens[4] + " " + tokens[5]
+            alter_table(tb_name, column)
+        else:
+            print("Error: Invalid command syntax")
     else:
         print("Error: Invalid command syntax, table name and/or columns not defined")
 
