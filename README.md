@@ -6,7 +6,7 @@ A simple database system design project.
 
 Run `python main.py`
 
-To exit the program, press Ctrl + Z.
+To exit the program, press Ctrl + Z like normal or type exit.
 
 ## Supported Queries
 
@@ -19,3 +19,7 @@ The assignment requires these queries to work:
 - DROP TABLE tb_name;
 - ALTER TABLE tb_name ADD col type;
 - SELECT * FROM tb_name;
+
+## Documentaion folder
+- Shows proof of every query working as intended
+- screen shots of all queries, and data folder being persistent

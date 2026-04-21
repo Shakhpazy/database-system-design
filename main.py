@@ -157,4 +157,6 @@ def parse_input(user_input):
 
 while True:
     user_input = input(f"\n({Current_Database}) >>> ")
+    if user_input.lower().strip() == "exit":
+        break
     parse_input(user_input)
